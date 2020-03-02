@@ -1,2 +1,16 @@
 # TheWriter
-Python application that excerpts the output from your sound card. Helpful for hearing impaired people or just to create the minutes of meeting.
+Python application that excerpts the output from your sound card. I wrote this for a hearing impaired colleague of mine to he could follow are Skype Meetings better. 
+
+## Demo
+
+## Features
+
+
+## Installation
+You need an Azure account for billing. 
+
+1. Create a [Azure cognitive speech ressource](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started) 
+1. Go to the created ressource in the Azure Portal and note the API Key.
+1. You need Python 3 installed [(manual)](https://phoenixnap.com/kb/how-to-install-python-3-windows)
+1. Open up main.py in text editor and edit the API Key.
+1. Start main.py (e.g. via batch file  "python main.py")
