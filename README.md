@@ -1,6 +1,6 @@
 # TheWriter
-Python application that excerpts the output from your sound card. So you get the text from all speech of your speakers.
-I wrote this for a hearing impaired colleague of mine so that he could follow our Skype Meetings better. 
+A Python application that excerpts the output from your sound card. So you get on scree text from all speech related stuff of your speakers.
+I wrote this application for a hearing impaired colleague of mine so that he could follow our Skype Meetings better. 
 
 ## Demo
 
