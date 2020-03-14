@@ -1,3 +1,12 @@
+# User stuff
+dotNet
+soundCard Samples
+tests
+UIsample.py
+*.txt
+main_private.py
+settings.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
