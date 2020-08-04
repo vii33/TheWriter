@@ -20,3 +20,6 @@ You need an Azure account for billing.
     * Donate if you like the software!
 1. Open up main.py in text editor, edit the API Key and ressource location.
 1. Start main.py (e.g. via batch file  "python main.py")
+
+# Costs
+Currently (08/2020) the service costs €1,265 per 1.000 transactions.
