@@ -25,6 +25,8 @@ class Window(Frame):
         self.master.title('The Writer')
         #master.geometry("700x350")
         self.master.configure(bg="#333333")
+        global Tkinterinstance
+        Tkinterinstance = master
 
         self.create_widgets()
         self.mainloop()
@@ -66,13 +68,19 @@ class Window(Frame):
         self.label_blind = Label(self.master, width=10, bg="#333333")
 
         self.button_en = Button(self.master, text="EN", command=self.startEn,
-                width=10,
+                width=5,
                 bg="#333333",
                 relief=GROOVE,
                 fg="white"
                 )
         self.button_de = Button(self.master, text="DE", command=self.startDe,
-                width=10,
+                width=5,
+                bg="#333333",
+                relief=GROOVE,
+                fg="white",
+                )
+        self.button_clipboard = Button(self.master, text="Clip", command=self.ClipBoardSummary,
+                width=5,
                 bg="#333333",
                 relief=GROOVE,
                 fg="white",
@@ -86,11 +94,13 @@ class Window(Frame):
 
         self.button_en.grid(row=0, column=0, sticky=W, padx=3, pady=5)
         self.button_de.grid(row=0, column=1, sticky=W)
+        self.button_clipboard.grid(row=0, column=2)
+        self.label_blind.grid(row=0, column=2)
         self.button_save.grid(row=0, column=3, sticky=E, padx=3, pady=5)
         self.label_final.grid(row=1, column=0, columnspan=4, padx=3, pady=0)
         self.label_live.grid(row=2, column=0, columnspan=4, padx=3, pady=3)
         
-        self.label_blind.grid(row=0, column=2)
+        
 
     def startEn(self):
         if self.speech_recoginzer is not None:
@@ -106,6 +116,9 @@ class Window(Frame):
         self.startRecognizing("de-DE") 
         #self.button_de.configure(highlightbackground="blue")
 
+    def ClipBoardSummary(self):
+        Tkinterinstance.clipboard_clear()
+        Tkinterinstance.clipboard_append(self.speech_recoginzer.conversation)
 
     def startRecognizing(self, recognition_language: str):
         print("starting {}".format(recognition_language))

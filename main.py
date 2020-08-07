@@ -1,6 +1,7 @@
 from tkinter import *
 import theUI
 
+
 # Individual Settings
 SPEECH_KEY = "KEY"
 SERVICE_REGION = "westeurope"
