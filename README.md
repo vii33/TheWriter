@@ -1,7 +1,6 @@
-# TheWriter
-
-Python application that excerpts the output from your sound card. So you get the text from all speech of your speakers.
-I wrote this for a hearing impaired colleague of mine so that he could follow our Skype Meetings better. 
+# The Writer
+A Python application that excerpts the output from your sound card. So you get on screen text from all speech related things of your speakers.
+I wrote this application for a hearing impaired colleague of mine so that he could follow our Skype Meetings better. 
 
 # Demo
 
@@ -17,6 +16,8 @@ You need an Azure account for billing.
 1. Go to the created ressource in the Azure Portal and note the API Key.
 
 ## Virtual Audio Cable Setup (optional)
+1. You need to have Python 3 installed [(manual)](https://phoenixnap.com/kb/how-to-install-python-3-windows)
+1. Do a `pip install azure-cognitiveservices-speech`
 1. Setup the Virtual Audio Cable (VAC) software, which captures your speaker sounds as microphone input
     * https://www.vb-audio.com/Cable/
     * [Youtube Configuration Manual](https://www.youtube.com/watch?v=ad30G5oBHtg&feature=emb_logo)
