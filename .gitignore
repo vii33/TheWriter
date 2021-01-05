@@ -9,6 +9,7 @@ main_private.py
 settings.json
 .gitignore
 azure samples/
+stuff/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
