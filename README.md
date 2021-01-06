@@ -1,43 +1,80 @@
 # The Writer
-A Python application that excerpts the output from your sound card. So you get on screen text from all speech related things of your speakers.
-I wrote this application for a hearing impaired colleague of mine so that he could follow our Skype Meetings better. 
 
-# Demo
+![Header Image](readme-files/Header.png)
+
+A Python UI application that transcribes speech output from your sound card. This can help if you are hearing impaired or just want to have a summary of your meeting.
 
 # Features
+
+* Transcribe from any spoken sounds. Either from your sound card or your own microphone (dictation mode).
+* The app can transcribe from [dozens of languages](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support). Currently, English and German are implemented in the UI, but can be changed easily (2 lines of code).
+* *Independent of any tool support.* 
+* You can save your transcript (including time codes) to the clipboard or hard disk.
+
+# Use Cases
+
+* *See* what others are *saying* in an online conference.
+* Helpful for the creation of the minutes of meeting (meeting protocol).
+* Dictate text in any software (I find the native [Windows 10 speech recognition](https://support.microsoft.com/en-us/windows/use-dictation-to-talk-instead-of-type-on-your-pc-fec94565-c4bd-329d-e59a-af033fa5689f) very bad in comparison, tested this a few times).
+
+**Further Ideas:**
+
+* Create an A.I. which summarizes your text for proper minutes of meeting.
+* Create an application that notifies you when your name is mentioned. If you don't want to pay attention to a meeting properly (not recommended :slightly_smiling_face:).
+
+
+# Demo
+![Short YouTube Demonstration Video]()
+
+![App Screenshot]()
+
+![Text Excpert]()
+
+
+# Remarks
+* The application uses the speech recognition service of the Microsoft Azure Cloud. If you don't have an account, the setup is quite easy. There is a free tier that allows you to process 5000 requests (sentences) for free per month. Beyond that, your requests will be throttled. (Taken 20 sentences per page, this would result in roughly 250 pages for free.)
+
+* Like Alexa, Siri, and Google Assistant, the sound files are transferred to the cloud for further processing. If you don't want this, you can set up a private governance scenario with your [own VM and Docker containers](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/speech-container-howto?tabs=stt%2Ccsharp%2Csimple-format). 
+
+* You could also add a further speaker recognition (i.e. who said what). For privacy reasons, I did not include this feature.
 
 
 # Installation
 
-## Cloud Setup
-You need an Azure account for billing. 
+### 1. Cloud Setup
 
-1. Create a [Azure cognitive speech ressource](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started) 
-1. Go to the created ressource in the Azure Portal and note the API Key.
+1. Create an [Azure cognitive speech resource](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started). Note the region where you created it, e.g. `West Europe`.
+1. In the Azure portal, go to the created resource, click on `Keys and Endpoint` and note the API Key `KEY 1`.
 
-## Virtual Audio Cable Setup (optional)
-1. You need to have Python 3 installed [(manual)](https://phoenixnap.com/kb/how-to-install-python-3-windows)
+### 2. Virtual Audio Cable Setup (optional)
+The software [Virtual Audio Cable (VAC)](https://www.vb-audio.com/Cable/) provides access to your sound card stream. It basically creates a virtual microphone that is fed by the output of your soundcard.
+
+1. [Download](https://vb-audio.com/Cable/) the software. The basic version is free.
+1. Setup the  software: [YouTube Configuration Manual](https://www.youtube.com/watch?v=ad30G5oBHtg&feature=emb_logo)
+    * Under `Sound`, click on `Recording` and `Cable Output`.
+    * Enable `Listen to this device` and select your standard playback device (i.e. sound channel)
+    * This is the important step:   
+  <img src="readme-files/vac.png" width="300" />
+
+
+
+### 3. Python Setup
 1. Do a `pip install azure-cognitiveservices-speech`
-1. Setup the Virtual Audio Cable (VAC) software, which captures your speaker sounds as microphone input
-    * https://www.vb-audio.com/Cable/
-    * [Youtube Configuration Manual](https://www.youtube.com/watch?v=ad30G5oBHtg&feature=emb_logo)
-    * Donate if you like the software!
+1. Further required packages: `tkinter` and `pprint`
+1. Call main.py with your noted service region and key: 
+```
+python main.py -k SERVICE_KEY -r SERVICE_REGION
+```
 
-
-## Python Setup
-Required packages (Python 3):
-azure.cognitiveservices.speech
-from datetime import datetime
-from tkinter
-import pprint
-
-
-
-1. Open up main.py in text editor, edit the API Key and ressource location.
-1. Start main.py (e.g. via batch file  "python main.py")
+All done!
 
 # Open Points
 
-* Automatic detection of language. Currently (02/2020) the detected language is fixed, i.e. you cannot swtich on the fly between to languages (this would be perfect): [Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-automatic-language-detection?pivots=programming-language-python
-)
-* Use Logging Framework
+* Automatic language detection. Currently (02/2020) a once detected language is fixed, i.e. you cannot switch on the fly between two languages (this would be useful, though): [Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-automatic-language-detection?pivots=programming-language-python).
+* Create a routine to select a microphone (voice input). You have to [retrieve the microphone ID](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-select-audio-input-devices) for this.
+* Use proper Logging Framework.
+
+----------
+
+### Contribution
+Original photo by [Camille Orgel](https://unsplash.com/@cam_bam?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText) on Unsplash.
