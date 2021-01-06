@@ -20,11 +20,11 @@ A Python UI application that transcribes speech output from your sound card. Thi
 **Further Ideas:**
 
 * Create an A.I. which summarizes your text for proper minutes of meeting.
-* Create an application that notifies you when your name is mentioned. If you don't want to pay attention to a meeting properly (not recommended :slightly_smiling_face:).
+* Create an application that notifies you when your name is mentioned. In chase if you don't want to pay attention to a meeting properly (not recommended :slightly_smiling_face:).
 
 
 # Demo
-![Short YouTube Demonstration Video]()
+[![](http://img.youtube.com/vi/yW6fhQ_DU0c/0.jpg)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
 
 ![App Screenshot]()
 
