@@ -69,8 +69,7 @@ All done!
 `python main.py -k SERVICE_KEY -r SERVICE_REGION`
 * Optionally, you can directly specify which microphone to use. For this, you need to [retrieve your microphone hardware ID](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-select-audio-input-devices) and give it as an input parameter: <br/>
 `python main.py -k SERVICE_KEY -r SERVICE_REGION -m {HW_ID}`
-<br/> 
-For Windows users, I precompiled the Microsoft example as a C# console app (see `get_microphone_id` folder).
+<br/> For Windows users, I precompiled the Microsoft example as a C# console app (see `get_microphone_id` folder).
 
 -------
 
