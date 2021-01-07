@@ -3,7 +3,7 @@ from datetime import datetime
 
 class  Speech_Wrapper:
     def __init__(self, speech_key: str, service_region: str, 
-            recognition_language: str, mic_id: str, callbackClass):
+            recognition_language: str, mic_id: str, dict_mode_active: bool, callbackClass):
         
         self.speech_recognizer = None
         self.callbackClass = callbackClass
@@ -17,6 +17,9 @@ class  Speech_Wrapper:
 
         speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
         speech_config.speech_recognition_language = recognition_language
+        if (dict_mode_active == True):
+            speech_config.enable_dictation()
+            print("Dictiation Mode enabled.")
         
         self.speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
         

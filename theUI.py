@@ -2,6 +2,7 @@ from tkinter import *
 import azurespeech.speech_wrapper as speech  #custom wrapper
 from datetime import datetime
 import pprint
+import keyboard
 
 #Transparency Tips:
 #app.wait_visibility(app)
@@ -78,35 +79,35 @@ class Window(Frame):
 
         self.label_blind = Label(self.master, width=16, bg=color_header)
 
-        self.button_en = Button(self.master, text="EN", command=self.startEn,
+        self.button_en = Button(self.master, text="EN", command=self.btn_start_EN,
                 font=("normal", 10),
                 width=6,
                 bg=color_buttons,
                 relief=GROOVE,
                 fg="white"
                 )
-        self.button_de = Button(self.master, text="DE", command=self.startDe,
+        self.button_de = Button(self.master, text="DE", command=self.btn_start_DE,
                 font=("normal", 10),
                 width=6,
                 bg=color_buttons,
                 relief=GROOVE,
                 fg="white",
                 )
-        self.button_silent_mode = Button(self.master, text="Silent", command=self.silent_mode,
+        self.button_silent_mode = Button(self.master, text="Silent", command=self.btn_silent_mode,
                 font=("normal", 8),
                 #width=6,
                 bg=color_buttons,
                 relief=GROOVE,
                 fg="white"
                 )
-        self.button_clear_record = Button(self.master, text="C", command=self.clear_record,
+        self.button_clear_record = Button(self.master, text="C", command=self.btn_clear_record,
                 font=("normal", 8),
                 #width=6,
                 bg=color_buttons,
                 relief=GROOVE,
                 fg="white"
                 )
-        self.button_dictation_mode = Button(self.master, text="Dict", command=self.dictation_mode,
+        self.button_dictation_mode = Button(self.master, text="Dict", command=self.btn_dictation_mode,
                 font=("normal", 8),
                 #width=6,
                 bg=color_buttons,
@@ -141,28 +142,33 @@ class Window(Frame):
         self.label_live.grid(row=2, column=0, columnspan=8, padx=3, pady=3)
         
 
-    def startEn(self):
+    def btn_start_EN(self):
         if self.speech_recoginzer is not None:
             self.speech_recoginzer.stop_recognizing()
+            self.button_de.config(background = color_buttons)
         
-        self.startRecognizing("en-US")
+        self.startRecognizing("en-US", self.dict_mode_active)
         self.mytext_result.set("Detection started")
+        self.button_en.config(background = color_bg_dark)
 
-    def startDe(self):
+
+    def btn_start_DE(self):
         if self.speech_recoginzer is not None:
             self.speech_recoginzer.stop_recognizing()
-        
-        self.startRecognizing("de-DE") 
+            self.button_en.config(background = color_buttons)
+
+        self.startRecognizing("de-DE", self.dict_mode_active) 
         self.mytext_result.set("Detection started")
+        self.button_de.config(background = color_bg_dark)
 
 
-    def startRecognizing(self, recognition_language: str):
+    def startRecognizing(self, recognition_language: str, dict_mode_active: str = False):
         print("starting {}".format(recognition_language))
         self.speech_recoginzer = speech.Speech_Wrapper(self.speech_key, 
-                self.service_region, recognition_language, self.mic_id, self)
+                self.service_region, recognition_language, self.mic_id, dict_mode_active, self)
         self.speech_recoginzer.start_recognizing()
 
-    def silent_mode(self):
+    def btn_silent_mode(self):
         if self.silent_mode_active == False:
             self.button_silent_mode.config(background = color_bg_dark)
             self.label_final.config(fg = color_bg_light)
@@ -174,19 +180,15 @@ class Window(Frame):
             self.label_live.config(fg = "white")
             self.silent_mode_active = False
 
-    def dictation_mode(self):
+    def btn_dictation_mode(self):
         if self.dict_mode_active == False:
-            self.button_silent_mode.config(background = color_bg_dark)
-
-            keyboard.write('The quick brown fox jumps over the lazy dog.')
-
-
+            self.button_dictation_mode.config(background = color_bg_dark)
             self.dict_mode_active = True
         else:
-            self.button_silent_mode.config(background = color_buttons)
+            self.button_dictation_mode.config(background = color_buttons)
             self.dict_mode_active = False
 
-    def clear_record(self):
+    def btn_clear_record(self):
         self.speech_recoginzer.conversation = {}
         self.mytext_result.set("")
         self.mytext_live.set("")
@@ -218,7 +220,10 @@ class Window(Frame):
 
     def setResultText(self, x):
         self.__text_result = x
+        if (self.dict_mode_active == True):        
+            keyboard.write(x)
         self.mytext_result.set(x)
+        print("r: " + x)
 
     def getLiveText(self):
         return self.__text_live
@@ -226,7 +231,7 @@ class Window(Frame):
     def setLiveText(self, x):
         self.__text_live = x
         self.mytext_live.set(x)
-        print("x" + x)
+        print("l: " + x)
 
     result_text = property(getResultText, setResultText)   
     live_text = property(getLiveText, setLiveText)   
