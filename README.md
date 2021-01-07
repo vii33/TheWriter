@@ -24,12 +24,10 @@ A Python UI application that transcribes speech output from your sound card. Thi
 
 
 # Demo
-[![YoutTube Link](http://img.youtube.com/vi/yW6fhQ_DU0c/0.jpg)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
 
 ![App Screenshot](readme-files/ui.gif)
-
 ![Text Excpert](readme-files/file.png)
-
+[![YoutTube Link](readme-files/yt-icon.png)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
 
 # Remarks
 * The application uses the speech recognition service of the Microsoft Azure Cloud. If you don't have an account, the setup is quite easy. There is a free tier that allows you to process 5000 requests (sentences) for free per month. Beyond that, your requests will be throttled. (Taken 20 sentences per page, this would result in roughly 250 pages for free.)
@@ -47,7 +45,7 @@ A Python UI application that transcribes speech output from your sound card. Thi
 1. In the Azure portal, go to the created resource, click on `Keys and Endpoint` and note the API Key `KEY 1`.
 
 ### 2. Virtual Audio Cable Setup (optional)
-The software [Virtual Audio Cable (VAC)](https://www.vb-audio.com/Cable/) provides access to your sound card stream. It basically creates a virtual microphone that is fed by the output of your soundcard.
+The software [Virtual Audio Cable (VAC)](https://www.vb-audio.com/Cable/) provides access to your sound card stream. It basically creates a virtual microphone that is fed by the output of your sound card. You don't have to install it if you just want to use the dictation mode.
 
 1. [Download](https://vb-audio.com/Cable/) the software. The basic version is free.
 1. Setup the  software: [YouTube Configuration Manual](https://www.youtube.com/watch?v=ad30G5oBHtg&feature=emb_logo)
@@ -61,12 +59,28 @@ The software [Virtual Audio Cable (VAC)](https://www.vb-audio.com/Cable/) provid
 ### 3. Python Setup
 1. Do a `pip install azure-cognitiveservices-speech`
 1. Further required packages: `tkinter` and `pprint`
-1. Call main.py with your noted service region and key: 
-```
-python main.py -k SERVICE_KEY -r SERVICE_REGION
-```
 
 All done!
+
+# Usage
+* Call main.py with your noted service region and key: <br/>
+`python main.py -k SERVICE_KEY -r SERVICE_REGION `
+* Optionally, you can directly specify which microphone to use. For this, you need to [retrieve your microphone hardware ID](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-select-audio-input-devices) and give it as an input parameter: 
+<br/>
+`python main.py -k SERVICE_KEY -r SERVICE_REGION -m {HW_ID} `
+<br/> 
+<br/> 
+For Windows users, I precompiled the Microsoft example as a C# console app (see `get_microphone_id` folder).
+
+-------
+
+* Cick on `EN` or `DE` to start the recognition.
+* The lower window shows the preliminary results, the upper window the final one (including punctuation).
+* `Silent`: disables the UI text output (it is still recorded, though) 
+* `Save CB`: copies all recorded text to the clip board
+* `Save file`: saves all recorded text into a file in the applications folder.
+* `C`: clears all recorded text from the memory.
+* `Dict`: Enables dictation mode (it's rather a `punctuation mode`). With this active, phrases like "question mark" or "new line" will be replaced by their corresponding characters.
 
 # Open Points
 
@@ -74,7 +88,7 @@ All done!
 * Create a routine to select a microphone (voice input). You have to [retrieve the microphone ID](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/how-to-select-audio-input-devices) for this.
 * Use proper Logging Framework.
 
-----------
 
-### Contribution
+
+# Contribution
 Original photo by [Camille Orgel](https://unsplash.com/@cam_bam?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText) on Unsplash.
