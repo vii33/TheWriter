@@ -1,3 +1,7 @@
+# ------------------------------------
+# https://github.com/vii33/TheWriter  
+# ------------------------------------
+
 import sys, getopt
 from tkinter import *
 import theUI
@@ -12,11 +16,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"k:r:")
     except getopt.GetoptError:
-        print ('main.py -k <AZURE_SPEECH_KEY> -r <AZURE_SERVICE_REGION>')
+        print ('main.py -k <AZURE_SPEECH_KEY> -r <AZURE_SERVICE_REGION> -m <MICROPHONE_HW_ID optional>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ('main.py -k <AZURE_SPEECH_KEY> -r <AZURE_SERVICE_REGION>')
+            print ('main.py -k <AZURE_SPEECH_KEY> -r <AZURE_SERVICE_REGION> -m <MICROPHONE_HW_ID optional>')
             sys.exit()
         elif opt in ("-k", "--k"):
             SPEECH_KEY = arg
