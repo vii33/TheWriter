@@ -26,7 +26,9 @@ A Python UI application that transcribes speech output from your sound card. Thi
 # Demo
 
 ![App Screenshot](readme-files/ui.gif)
+
 ![Text Excpert](readme-files/file.png)
+
 [![YoutTube Link](readme-files/yt-icon.png)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
 
 # Remarks
