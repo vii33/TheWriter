@@ -132,8 +132,8 @@ class Window(Frame):
         btnYpadding = 12
         self.button_en.grid(row=0, column=0, sticky=W, padx=(8, 3), pady=btnYpadding)
         self.button_de.grid(row=0, column=1, sticky=W, padx=0, pady=btnYpadding)
-        self.button_silent_mode.grid(row=0, column=2, sticky=W, padx=(3,0), pady=btnYpadding)
-        self.button_dictation_mode.grid(row=0, column=3, sticky=W, padx=0, pady=btnYpadding)
+        self.button_dictation_mode.grid(row=0, column=2, sticky=W, padx=(3,0), pady=btnYpadding)
+        self.button_silent_mode.grid(row=0, column=3, sticky=W, padx=0, pady=btnYpadding)
         self.button_clear_record.grid(row=0, column=4, sticky=W, padx=3, pady=btnYpadding)
         self.label_blind.grid(row=0, column=5, padx=0, pady=btnYpadding)
         self.button_save_clipboard.grid(row=0, column=6, sticky=E, padx=0, pady=btnYpadding)
@@ -145,22 +145,33 @@ class Window(Frame):
     def btn_start_EN(self):
         if self.speech_recoginzer is not None:
             self.speech_recoginzer.stop_recognizing()
-            self.button_de.config(background = color_buttons)
+            self.speech_recoginzer = None
+            self.reset_buttons()
+            return
         
         self.startRecognizing("en-US", self.dict_mode_active)
         self.mytext_result.set("Detection started")
         self.button_en.config(background = color_bg_dark)
+        self.button_en.config(text="(X)")
 
 
     def btn_start_DE(self):
         if self.speech_recoginzer is not None:
             self.speech_recoginzer.stop_recognizing()
-            self.button_en.config(background = color_buttons)
+            self.speech_recoginzer = None
+            self.reset_buttons()
+            return
 
         self.startRecognizing("de-DE", self.dict_mode_active) 
         self.mytext_result.set("Detection started")
         self.button_de.config(background = color_bg_dark)
+        self.button_de.config(text="(X)")
 
+    def reset_buttons(self):
+        self.button_en.config(background = color_buttons)
+        self.button_en.config(text="EN")
+        self.button_de.config(background = color_buttons)
+        self.button_de.config(text="DE")
 
     def startRecognizing(self, recognition_language: str, dict_mode_active: str = False):
         print("starting {}".format(recognition_language))
@@ -221,9 +232,9 @@ class Window(Frame):
     def setResultText(self, x):
         self.__text_result = x
         if (self.dict_mode_active == True):        
+            keyboard.write(" ")
             keyboard.write(x)
         self.mytext_result.set(x)
-        print("r: " + x)
 
     def getLiveText(self):
         return self.__text_live
@@ -231,7 +242,6 @@ class Window(Frame):
     def setLiveText(self, x):
         self.__text_live = x
         self.mytext_live.set(x)
-        print("l: " + x)
 
     result_text = property(getResultText, setResultText)   
     live_text = property(getLiveText, setLiveText)   

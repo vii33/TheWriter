@@ -52,7 +52,6 @@ class  Speech_Wrapper:
         
         key = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         self.conversation[key] = evt.result.text
-        #self.callback_UI.mytext_final.set(evt.result.text) ###
         self.callbackClass.result_text = evt.result.text
             
     def cb_recogonizing(self, evt):
@@ -60,7 +59,6 @@ class  Speech_Wrapper:
         sentence context info"""
         #print("T: {}".format(evt.result.text))
                 
-        # self.callback_UI.mytext_live.set(evt.result.text) ###
         self.callbackClass.live_text = evt.result.text
 
     def cb_cancelled(self, evt):
