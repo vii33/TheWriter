@@ -3,16 +3,22 @@ from datetime import datetime
 
 class  Speech_Wrapper:
     def __init__(self, speech_key: str, service_region: str, 
-            recognition_language: str, callbackUI):
+            recognition_language: str, mic_id: str, callbackClass):
         
         self.speech_recognizer = None
-        self.callback_UI = callbackUI
+        self.callbackClass = callbackClass
         self.conversation = {}
 
         # Setup Azure Speech Recognizer
+        if mic_id is not None:
+            audio_config = speechsdk.AudioConfig(device_name = mic_id)
+        else:
+            audio_config = None
+
         speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
-        speech_config.speech_recognition_language=recognition_language
-        self.speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
+        speech_config.speech_recognition_language = recognition_language
+        
+        self.speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_config)
         
         # Connect callbacks to the events fired by the speech recognizer
         self.speech_recognizer.session_started.connect(lambda evt: print('SESSION STARTED: {}'.format(evt)))
@@ -43,15 +49,16 @@ class  Speech_Wrapper:
         
         key = datetime.now().strftime('%Y-%m-%d_%H:%M:%S')
         self.conversation[key] = evt.result.text
-        self.callback_UI.mytext_final.set(evt.result.text)
+        #self.callback_UI.mytext_final.set(evt.result.text) ###
+        self.callbackClass.result_text = evt.result.text
             
     def cb_recogonizing(self, evt):
         """callback for recoginzed sentences. Gets updated frequently but words change sometimes (due to /
         sentence context info"""
         #print("T: {}".format(evt.result.text))
                 
-        self.callback_UI.mytext_live.set(evt.result.text)
-        
+        # self.callback_UI.mytext_live.set(evt.result.text) ###
+        self.callbackClass.live_text = evt.result.text
 
     def cb_cancelled(self, evt):
         """Callback when continous recogntion is cancelled"""

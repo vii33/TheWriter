@@ -15,7 +15,7 @@ color_header = "#2D2D2D"
 color_buttons = "#3A3A3A"
 
 class Window(Frame):
-    def __init__(self, master, speech_key:str, service_region: str):
+    def __init__(self, master, speech_key:str, service_region: str, mic_id: str = None):
         print("UI init")
         
         # Prop init
@@ -24,6 +24,10 @@ class Window(Frame):
         self.service_region = service_region
         self.conversation = {}
         self.silent_mode_active = False
+        self.dict_mode_active = False
+        self.mic_id = mic_id
+        self.__text_result = ""
+        self.__text_live = ""  
 
         # UI stuff
         super().__init__(master)
@@ -35,20 +39,20 @@ class Window(Frame):
         self.create_widgets()
         self.mainloop()
         self.master.protocol("WM_DELETE_WINDOW", self.on_closing())
-        
+
+  
     def on_closing(self):
         print("Closing...")
         self.speech_recoginzer.stop_recognizing()
-
 
     def create_widgets(self):  
         self.mytext_live = StringVar()
         self.mytext_live.set("...")
 
-        self.mytext_final = StringVar()
-        self.mytext_final.set("...")
+        self.mytext_result = StringVar()
+        self.mytext_result.set("...")
    
-        self.label_final = Label(self.master, textvariable=self.mytext_final, 
+        self.label_final = Label(self.master, textvariable=self.mytext_result, 
             font=("bold", 14), 
             pady=5, # inside text padding
             padx=1,
@@ -102,6 +106,13 @@ class Window(Frame):
                 relief=GROOVE,
                 fg="white"
                 )
+        self.button_dictation_mode = Button(self.master, text="Dict", command=self.dictation_mode,
+                font=("normal", 8),
+                #width=6,
+                bg=color_buttons,
+                relief=GROOVE,
+                fg="white"
+                )
         self.button_save_clipboard = Button(self.master, text="Save CB", command=self.save_cb,
                 font=("normal", 10),
                 #width=10,
@@ -120,13 +131,14 @@ class Window(Frame):
         btnYpadding = 12
         self.button_en.grid(row=0, column=0, sticky=W, padx=(8, 3), pady=btnYpadding)
         self.button_de.grid(row=0, column=1, sticky=W, padx=0, pady=btnYpadding)
-        self.button_silent_mode.grid(row=0, column=2, sticky=W, padx=0, pady=btnYpadding)
-        self.button_clear_record.grid(row=0, column=3, sticky=W, padx=0, pady=btnYpadding)
-        self.label_blind.grid(row=0, column=4, padx=0, pady=btnYpadding)
-        self.button_save_clipboard.grid(row=0, column=5, sticky=E, padx=0, pady=btnYpadding)
-        self.button_save_file.grid(row=0, column=6, sticky=E, padx=(3, 8), pady=btnYpadding)
-        self.label_final.grid(row=1, column=0, columnspan=7, padx=3, pady=0)
-        self.label_live.grid(row=2, column=0, columnspan=7, padx=3, pady=3)
+        self.button_silent_mode.grid(row=0, column=2, sticky=W, padx=(3,0), pady=btnYpadding)
+        self.button_dictation_mode.grid(row=0, column=3, sticky=W, padx=0, pady=btnYpadding)
+        self.button_clear_record.grid(row=0, column=4, sticky=W, padx=3, pady=btnYpadding)
+        self.label_blind.grid(row=0, column=5, padx=0, pady=btnYpadding)
+        self.button_save_clipboard.grid(row=0, column=6, sticky=E, padx=0, pady=btnYpadding)
+        self.button_save_file.grid(row=0, column=7, sticky=E, padx=(3, 8), pady=btnYpadding)
+        self.label_final.grid(row=1, column=0, columnspan=8, padx=3, pady=0)
+        self.label_live.grid(row=2, column=0, columnspan=8, padx=3, pady=3)
         
 
     def startEn(self):
@@ -134,20 +146,20 @@ class Window(Frame):
             self.speech_recoginzer.stop_recognizing()
         
         self.startRecognizing("en-US")
-        self.mytext_final.set("Detection started")
+        self.mytext_result.set("Detection started")
 
     def startDe(self):
         if self.speech_recoginzer is not None:
             self.speech_recoginzer.stop_recognizing()
         
         self.startRecognizing("de-DE") 
-        self.mytext_final.set("Detection started")
+        self.mytext_result.set("Detection started")
 
 
     def startRecognizing(self, recognition_language: str):
         print("starting {}".format(recognition_language))
         self.speech_recoginzer = speech.Speech_Wrapper(self.speech_key, 
-                self.service_region, recognition_language, self)
+                self.service_region, recognition_language, self.mic_id, self)
         self.speech_recoginzer.start_recognizing()
 
     def silent_mode(self):
@@ -162,9 +174,21 @@ class Window(Frame):
             self.label_live.config(fg = "white")
             self.silent_mode_active = False
 
+    def dictation_mode(self):
+        if self.dict_mode_active == False:
+            self.button_silent_mode.config(background = color_bg_dark)
+
+            keyboard.write('The quick brown fox jumps over the lazy dog.')
+
+
+            self.dict_mode_active = True
+        else:
+            self.button_silent_mode.config(background = color_buttons)
+            self.dict_mode_active = False
+
     def clear_record(self):
         self.speech_recoginzer.conversation = {}
-        self.mytext_final.set("")
+        self.mytext_result.set("")
         self.mytext_live.set("")
 
     def save_cb(self):
@@ -177,7 +201,7 @@ class Window(Frame):
             self.master.update()      # needed to stay on the clipboard after the window is closed
             
             print("Text copied to clipboard")
-            self.mytext_final.set("Text copied")
+            self.mytext_result.set("Text copied")
 
     def save_file(self):
         if self.speech_recoginzer is not None:
@@ -187,9 +211,25 @@ class Window(Frame):
             f.close()
             
             print("Text written to HDD")
-            self.mytext_final.set("Text written to HDD")
+            self.mytext_result.set("Text written to HDD")
 
+    def getResultText(self):
+        return self.__text_result
 
+    def setResultText(self, x):
+        self.__text_result = x
+        self.mytext_result.set(x)
+
+    def getLiveText(self):
+        return self.__text_live
+
+    def setLiveText(self, x):
+        self.__text_live = x
+        self.mytext_live.set(x)
+        print("x" + x)
+
+    result_text = property(getResultText, setResultText)   
+    live_text = property(getLiveText, setLiveText)   
 
 if __name__ == '__main__':
     root = Tk()
