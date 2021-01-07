@@ -24,11 +24,11 @@ A Python UI application that transcribes speech output from your sound card. Thi
 
 
 # Demo
-[![](http://img.youtube.com/vi/yW6fhQ_DU0c/0.jpg)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
+[![YoutTube Link](http://img.youtube.com/vi/yW6fhQ_DU0c/0.jpg)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
 
-![App Screenshot]()
+![App Screenshot](readme-files/ui.gif)
 
-![Text Excpert]()
+![Text Excpert](readme-files/file.png)
 
 
 # Remarks
