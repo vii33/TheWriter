@@ -29,7 +29,7 @@ A Python UI application that transcribes speech output from your sound card. Thi
 
 ![Text Excpert](readme-files/file.png)
 
-[![YoutTube Link](readme-files/yt-icon.png)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
+See demo on YouTube: [![YoutTube Link](readme-files/yt-icon.png)](http://www.youtube.com/watch?v=yW6fhQ_DU0c "The Writer")
 
 # Remarks
 * The application uses the speech recognition service of the Microsoft Azure Cloud. If you don't have an account, the setup is quite easy. There is a free tier that allows you to process 5000 requests (sentences) for free per month. Beyond that, your requests will be throttled. (Taken 20 sentences per page, this would result in roughly 250 pages for free.)
